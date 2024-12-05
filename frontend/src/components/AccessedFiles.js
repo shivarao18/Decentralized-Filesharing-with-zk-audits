@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
 
-const FileList = ({ walletAddress, contract }) => {
+const AccessedFiles = ({ walletAddress, contract }) => {
     const [files, setFiles] = useState([]);
 
     useEffect(() => {
-        const fetchFiles = async () => {
+        const fetchAccessedFiles = async () => {
             if (!walletAddress || !contract) return;
 
             try {
-                const fileIds = await contract.getUploadedFiles(walletAddress);
-                setFiles(fileIds);
+                const sharedFiles = await contract.getSharedFiles(walletAddress);
+                setFiles(sharedFiles);
             } catch (error) {
-                console.error("Error fetching files:", error);
+                console.error("Error fetching accessed files:", error);
             }
         };
 
-        fetchFiles();
+        fetchAccessedFiles();
     }, [walletAddress, contract]);
 
     return (
         <div>
-            <h3>Your Uploaded Files:</h3>
+            <h3>Files Shared With You:</h3>
             <ul>
                 {files.map((fileId) => (
                     <li key={fileId}>{fileId}</li>
@@ -30,5 +30,4 @@ const FileList = ({ walletAddress, contract }) => {
     );
 };
 
-export default FileList;
-
+export default AccessedFiles;

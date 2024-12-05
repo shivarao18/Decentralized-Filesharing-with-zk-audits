@@ -1,36 +1,43 @@
-import React, { useState } from 'react';
-import UploadForm from './components/UploadForm';
-import FileList from './components/FileList';
-import ConnectWalletButton from './components/ConnectWalletButton';
-import './App.css';
+import React, { useState } from "react";
+import MetaMaskAuth from "./components/MetaMaskAuth";
+import FileUpload from "./components/FileUpload";
+import FileSharing from "./components/FileSharing";
+import FileList from "./components/FileList";
+import FilesListSharedWithMe from "./components/FilesListSharedWithMe.js";
 
-function App() {
-  const [files, setFiles] = useState([]);
-  const [walletConnected, setWalletConnected] = useState(false);
+const App = () => {
+    const [walletAddress, setWalletAddress] = useState(""); // Wallet address after connection
 
-  const handleFileUpload = (file) => {
-    // For now, add the file to the local state
-    setFiles([...files, file]);
-  };
+    return (
+        <div>
+            <h1>Blockchain File Sharing DApp</h1>
+            
+            {/* Step 1: MetaMask Authentication */}
+            {!walletAddress ? (
+                <MetaMaskAuth setWalletAddress={setWalletAddress} />
+            ) : (
+                <div>
+                    <p>Connected Wallet: {walletAddress}</p>
 
-  const handleWalletConnect = () => {
-    setWalletConnected(true);
-  };
+                    {/* Step 2: Upload Files */}
+                    <h2>Upload Files</h2>
+                    <FileUpload />
 
-  return (
-    <div className="App">
-      <h1>Blockchain-based File Sharing System</h1>
-      <ConnectWalletButton onConnect={handleWalletConnect} isConnected={walletConnected} />
-      {walletConnected ? (
-        <>
-          <UploadForm onUpload={handleFileUpload} />
-          <FileList files={files} />
-        </>
-      ) : (
-        <p>Please connect your wallet to start using the file sharing system.</p>
-      )}
-    </div>
-  );
-}
+                    {/* Step 3: Share Files */}
+                    <h2>Share Files</h2>
+                    <FileSharing walletAddress={walletAddress} />
+
+                    {/* Step 4: View Uploaded Files */}
+                    <h2>Your Uploaded Files</h2>
+                    <FileList walletAddress={walletAddress} />
+
+                    {/* Step 5: View Received Files */}
+                    <h2>Files Shared With You</h2>
+                    <FilesListSharedWithMe walletAddress={walletAddress} />
+                </div>
+            )}
+        </div>
+    );
+};
 
 export default App;
