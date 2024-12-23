@@ -1,25 +1,11 @@
 import React, { useState } from "react";
-import { create } from "ipfs-http-client";
+import axios from "axios";
 
-const projectId = "Your_INFURA_PROJECT_ID"; // Replace with your Infura Project ID
-const projectSecret = "Your_INFURA_PROJECT_SECRET"; // Replace with your Infura Project Secret
-const auth = "Basic " + btoa(projectId + ":" + projectSecret);
-
-// Connect to IPFS using Infura's IPFS gateway
-const client = create({
-    host: "ipfs.infura.io",
-    port: 5001,
-    protocol: "https",
-    headers: {
-        authorization: auth,
-    },
-});
-
-const FileUpload = ({ walletAddress }) => {
+const FileUpload = ({ walletAddress, fileMetadataContract, fileSharingContract }) => {
     const [file, setFile] = useState(null);
     const [uploading, setUploading] = useState(false);
-    const [cid, setCid] = useState(""); // CID of the uploaded file
-
+    const [cid, setCid] = useState("");
+    const [fileId, setFileId] = useState("");
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
     };
@@ -30,19 +16,75 @@ const FileUpload = ({ walletAddress }) => {
             return;
         }
 
+        if (!walletAddress || !fileMetadataContract || !fileSharingContract) {
+            alert("Please connect your wallet and ensure contracts are initialized.");
+            return;
+        }
+
         try {
             setUploading(true);
-            console.log("Uploading file to IPFS...");
+            console.log("Uploading file to Pinata...");
 
-            // Convert file to Buffer for IPFS upload
-            const added = await client.add(file);
-            console.log("IPFS Upload Result:", added);
+            // Step 1: Upload the file to IPFS
+            const formData = new FormData();
+            formData.append("file", file);
 
-            setCid(added.path); // Set the CID returned by IPFS
-            alert(`File uploaded to IPFS with CID: ${added.path}`);
+            const fileResponse = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+                headers: {
+                    pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
+                    pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET,
+                },
+            });
+
+            console.log("File uploaded successfully:", fileResponse.data);
+            const fileCid = fileResponse.data.IpfsHash;
+
+            // Step 2: Prepare metadata
+            const metadata = {
+                name: file.name,
+                cid: fileCid,
+                uploader: walletAddress, // Use the connected wallet address
+                timestamp: new Date().toISOString(),
+            };
+
+            // Step 3: Pin metadata to IPFS
+            console.log("Pinning metadata to Pinata...");
+            const metadataResponse = await axios.post("https://api.pinata.cloud/pinning/pinJSONToIPFS", metadata, {
+                headers: {
+                    pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
+                    pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET,
+                },
+            });
+
+            console.log("Metadata pinned successfully:", metadataResponse.data);
+            const metadataCid = metadataResponse.data.IpfsHash;
+
+            // Step 4: Store file details on the blockchain
+            console.log("Storing file and metadata on the blockchain...");
+            const tx = await fileSharingContract.uploadFile(fileCid);
+            const receipt = await tx.wait(); // Wait for transaction receipt
+
+            // Directly capture fileId from the emitted event
+            const fileId = receipt.events[0].args.fileId; // Simplified event capture
+            console.log("File ID received from smart contract:", fileId);
+
+            console.log("File CID stored on blockchain:", fileCid);
+             setFileId(fileId);
+
+            // Step 5: Store metadata CID in the file metadata contract
+            const metadataTx = await fileMetadataContract.addMetadata(metadataCid, file.name);
+            await metadataTx.wait();
+
+            console.log("Metadata CID stored on blockchain:", metadataTx);
+
+            setCid(fileCid);
+
+            alert(`File and metadata uploaded successfully!
+File URL: https://gateway.pinata.cloud/ipfs/${fileCid}
+Metadata URL: https://gateway.pinata.cloud/ipfs/${metadataCid}`);
         } catch (error) {
-            console.error("Error uploading file to IPFS:", error);
-            alert("Failed to upload file to IPFS.");
+            console.error("Error uploading file or storing metadata:", error);
+            alert("Failed to upload file or store metadata. Please try again.");
         } finally {
             setUploading(false);
         }
@@ -57,13 +99,11 @@ const FileUpload = ({ walletAddress }) => {
             {cid && (
                 <p>
                     File uploaded successfully! CID:{" "}
-                    <a
-                        href={`https://ipfs.io/ipfs/${cid}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
+                    <a href={`https://gateway.pinata.cloud/ipfs/${cid}`} target="_blank" rel="noopener noreferrer">
                         {cid}
                     </a>
+                    <br />
+                    <strong>File ID:</strong> {fileId}
                 </p>
             )}
         </div>

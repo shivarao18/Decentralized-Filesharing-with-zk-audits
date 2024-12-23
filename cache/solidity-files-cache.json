@@ -36,37 +36,6 @@
         "FileAccess"
       ]
     },
-    "C:\\CNSP\\contracts\\ZKPVerifier.sol": {
-      "lastModificationDate": 1731104383956,
-      "contentHash": "d41d8cd98f00b204e9800998ecf8427e",
-      "sourceName": "contracts/ZKPVerifier.sol",
-      "solcConfig": {
-        "version": "0.8.18",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [],
-      "artifacts": []
-    },
     "C:\\CNSP\\contracts\\AccessControl.sol": {
       "lastModificationDate": 1732406834308,
       "contentHash": "654dda2438fda19825ce1c0cacc09f28",
@@ -172,6 +141,113 @@
       ],
       "artifacts": [
         "FileSharing"
+      ]
+    },
+    "C:\\CNSP\\contracts\\FileMetadata.sol": {
+      "lastModificationDate": 1733436364617,
+      "contentHash": "6e73d6398fa463689bf41ad6b0915c0a",
+      "sourceName": "contracts/FileMetadata.sol",
+      "solcConfig": {
+        "version": "0.8.18",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.18"
+      ],
+      "artifacts": [
+        "FileMetadata"
+      ]
+    },
+    "C:\\CNSP\\contracts\\AuditLog.sol": {
+      "lastModificationDate": 1733527716810,
+      "contentHash": "5557ea51ccbb7dc1acf2cad3cc884979",
+      "sourceName": "contracts/AuditLog.sol",
+      "solcConfig": {
+        "version": "0.8.18",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Verifier.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.18"
+      ],
+      "artifacts": [
+        "AuditLog"
+      ]
+    },
+    "C:\\CNSP\\contracts\\Verifier.sol": {
+      "lastModificationDate": 1733527726167,
+      "contentHash": "5ec1b823c801edee6acfcd3dc2cf66cc",
+      "sourceName": "contracts/Verifier.sol",
+      "solcConfig": {
+        "version": "0.8.18",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.7.0 <0.9.0"
+      ],
+      "artifacts": [
+        "Verifier"
       ]
     }
   }

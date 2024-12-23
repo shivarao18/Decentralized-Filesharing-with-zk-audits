@@ -3,7 +3,8 @@ import { ethers } from "ethers";
 import FileAccessABI from "./abis/FileAccess.json";
 import FileSharingABI from "./abis/FileSharing.json";
 import AccessControlABI from "./abis/AccessControl.json";
-
+import { FILE_METADATA_ABI, FILE_METADATA_ADDRESS } from "./constants/contract";
+import { FILE_SHARING_ABI, FILE_SHARING_ADDRESS } from "./constants/contract";
 // IPFS client setup
 const ipfsClient = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -97,17 +98,24 @@ export const shareFileWithUser = async (fileId, recipientAddress) => {
 };
 
 // Get files shared with a specific user
-export const getFilesSharedWithUser = async (userAddress) => {
-    if (!fileSharingContract) {
-        throw new Error("FileSharing contract is not initialized.");
-    }
+export const getFilesSharedWithUser = async (walletAddress) => {
+    if (!walletAddress) throw new Error("Wallet address is required!");
 
     try {
-        const sharedFiles = await fileSharingContract.getSharedFiles(userAddress);
-        console.log("Fetched files shared with user:", sharedFiles);
-        return sharedFiles;
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+
+        const contract = new ethers.Contract(FILE_SHARING_ADDRESS, FILE_SHARING_ABI, signer);
+
+        // Call the smart contract function
+        const sharedFiles = await contract.getSharedFiles(walletAddress);
+
+        console.log("Files shared with user:", sharedFiles);
+
+        // The function returns an array of file IDs (CIDs)
+        return sharedFiles.map((fileId) => fileId); // If CIDs are returned directly
     } catch (error) {
-        console.error("Error fetching shared files:", error);
+        console.error("Error fetching files shared with user:", error);
         throw error;
     }
 };
@@ -159,5 +167,50 @@ export const checkUserRole = async (role, userAddress) => {
     } catch (error) {
         console.error("Error checking user role:", error);
         throw error;
+    }
+};
+
+ // this is the code speciific to that metadata thing we added later, remove if it doesn't workout
+
+
+// Initialize the contract
+const getContract = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(FILE_METADATA_ADDRESS, FILE_METADATA_ABI, signer);
+    return contract;
+};
+
+// Add Metadata
+export const addMetadata = async (cid, fileName) => {
+    try {
+        const contract = await getContract();
+        const tx = await contract.addMetadata(cid, fileName);
+        await tx.wait();
+        console.log("Metadata added successfully:", tx);
+    } catch (error) {
+        console.error("Error adding metadata:", error);
+    }
+};
+
+// Get Metadata Count
+export const getMetadataCount = async (userAddress) => {
+    try {
+        const contract = await getContract();
+        const count = await contract.getMetadataCount(userAddress);
+        return count.toString();
+    } catch (error) {
+        console.error("Error fetching metadata count:", error);
+    }
+};
+
+// Get Metadata by Index
+export const getMetadata = async (userAddress, index) => {
+    try {
+        const contract = await getContract();
+        const metadata = await contract.getMetadata(userAddress, index);
+        return metadata;
+    } catch (error) {
+        console.error("Error fetching metadata:", error);
     }
 };
