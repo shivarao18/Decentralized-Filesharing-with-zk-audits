@@ -30,7 +30,6 @@ const FileSharing = ({ contract }) => {
 
     return (
         <div className="share-file-container">
-            <h3 className="section-title">Share a File</h3>
             <input
                 type="text"
                 placeholder="File ID (CID)"
