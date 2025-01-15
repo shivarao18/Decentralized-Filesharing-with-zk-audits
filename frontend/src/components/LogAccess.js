@@ -53,22 +53,30 @@ const LogAccess = ({ auditLogContract, verifierContract }) => {
   };
 
   return (
-    <div>
-      <h3>Log File Access</h3>
-      <input
-        type="text"
-        placeholder="File ID"
-        value={fileId}
-        onChange={(e) => setFileId(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Action (e.g., Read)"
-        value={action}
-        onChange={(e) => setAction(e.target.value)}
-      />
-      <button onClick={handleGenerateProof}>Generate Proof</button>
-      <button onClick={handleLogAccess}>Log Access</button>
+    <div className="log-file-access-container">
+        <h3 className="section-title">Log File Access</h3>
+        <input
+            type="text"
+            placeholder="File ID"
+            value={fileId}
+            onChange={(e) => setFileId(e.target.value)}
+            className="text-input"
+        />
+        <input
+            type="text"
+            placeholder="Action (e.g., Read)"
+            value={action}
+            onChange={(e) => setAction(e.target.value)}
+            className="text-input"
+        />
+        <div className="button-group">
+            <button onClick={handleGenerateProof} className="action-button">
+                Generate Proof
+            </button>
+            <button onClick={handleLogAccess} className="action-button">
+                Log Access
+            </button>
+        </div>
     </div>
   );
 };

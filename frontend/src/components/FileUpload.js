@@ -91,20 +91,36 @@ Metadata URL: https://gateway.pinata.cloud/ipfs/${metadataCid}`);
     };
 
     return (
-        <div>
-            <input type="file" onChange={handleFileChange} />
-            <button onClick={handleUpload} disabled={uploading}>
+        <div className="file-upload-container">
+            <input
+                type="file"
+                onChange={handleFileChange}
+                className="file-input"
+            />
+            <button
+                onClick={handleUpload}
+                disabled={uploading}
+                className={`upload-button ${uploading ? "disabled" : ""}`}
+            >
                 {uploading ? "Uploading..." : "Upload File"}
             </button>
             {cid && (
-                <p>
-                    File uploaded successfully! CID:{" "}
-                    <a href={`https://gateway.pinata.cloud/ipfs/${cid}`} target="_blank" rel="noopener noreferrer">
-                        {cid}
-                    </a>
-                    <br />
-                    <strong>File ID:</strong> {fileId}
-                </p>
+                <div className="upload-success">
+                    <p>
+                        File uploaded successfully! CID:{" "}
+                        <a
+                            href={`https://gateway.pinata.cloud/ipfs/${cid}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            
+                        >
+                            {cid}
+                        </a>
+                    </p>
+                    <p>
+                        <strong>File ID:</strong> {fileId}
+                    </p>
+                </div>
             )}
         </div>
     );
