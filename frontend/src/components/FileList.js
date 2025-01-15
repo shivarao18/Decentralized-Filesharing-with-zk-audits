@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+// File list
 const FileList = ({ walletAddress, contract }) => {
     const [files, setFiles] = useState([]);
 
