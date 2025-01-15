@@ -72,62 +72,73 @@ const App = () => {
     }, [walletAddress]); // Only run when walletAddress changes
 
     return (
-        <div>
-            <h1>Blockchain File Sharing DApp</h1>
+        <div className="app-container">
+            <h1 className="app-title">Blockchain File Sharing DApp</h1>
 
             {/* Step 1: MetaMask Authentication */}
             {!walletAddress ? (
                 <MetaMaskAuth setWalletAddress={setWalletAddress} />
             ) : (
-                <div>
-                    <p>Connected Wallet: {walletAddress}</p>
+                <div className="content-container">
+                    <p className="wallet-info">Connected Wallet: <span>{walletAddress}</span></p>
 
                     {/* Step 2: Upload Files */}
-                    <h2>Upload Files</h2>
-                    {fileMetadataContract && fileSharingContract ? (
-                        <FileUpload
-                            walletAddress={walletAddress}
-                            fileMetadataContract={fileMetadataContract}
-                            fileSharingContract={fileSharingContract}
-                        />
-                    ) : (
-                        <p>Loading Upload functionality...</p>
-                    )}
+                    <section className="section">
+                        <h2>Upload Files</h2>
+                        {fileMetadataContract && fileSharingContract ? ( 
+                            <FileUpload
+                                walletAddress={walletAddress}
+                                fileMetadataContract={fileMetadataContract}
+                                fileSharingContract={fileSharingContract}
+                            />
+                        ) : (
+                            <p className="loading-text">Loading Upload functionality...</p>
+                        )}
+                    </section>
 
                     {/* Step 3: Share Files */}
-                    <h2>Share Files</h2>
-                    {fileSharingContract ? (
-                        <FileSharing contract={fileSharingContract} />
-                    ) : (
-                        <p>Loading File Sharing functionality...</p>
-                    )}
+                    <section className="section">
+                        <h2>Share Files</h2>
+                        {fileSharingContract ? (
+                            <FileSharing contract={fileSharingContract} />
+                        ) : (
+                            <p className="loading-text">Loading File Sharing functionality...</p>
+                        )}
+                    </section>
 
                     {/* Step 4: View Uploaded Files */}
-                    <h2>Your Uploaded Files</h2>
-                    {fileMetadataContract ? (
-                        <FileList walletAddress={walletAddress} contract={fileMetadataContract} />
-                    ) : (
-                        <p>Loading your uploaded files...</p>
-                    )}
+                    <section className="section">
+                        <h2>Your Uploaded Files</h2>
+                        {fileMetadataContract ? (
+                            <FileList walletAddress={walletAddress} contract={fileMetadataContract} />
+                        ) : (
+                            <p className="loading-text">Loading your uploaded files...</p>
+                        )}
+                    </section>
 
                     {/* Step 5: View Received Files */}
-                    <h2>Files Shared With You</h2>
-                    {fileSharingContract ? (
-                        <FilesListSharedWithMe walletAddress={walletAddress} />
-                    ) : (
-                        <p>Loading shared files...</p>
-                    )}
+                    <section className="section">
+                        <h2>Files Shared With You</h2>
+                        {fileSharingContract ? (
+                            <FilesListSharedWithMe walletAddress={walletAddress} />
+                        ) : (
+                            <p className="loading-text">Loading shared files...</p>
+                        )}
+                    </section>
 
                     {/* Step 6: Log File Access */}
-                    <h2>Log File Access</h2>
-                    {auditLogContract && verifierContract ? (
-                        <LogAccess auditLogContract={auditLogContract} verifierContract={verifierContract} />
-                    ) : (
-                        <p>Loading access logging functionality...</p>
-                    )}
+                    <section className="section">
+                        <h2>Log File Access</h2>
+                        {auditLogContract && verifierContract ? (
+                            <LogAccess auditLogContract={auditLogContract} verifierContract={verifierContract} />
+                        ) : (
+                            <p className="loading-text">Loading access logging functionality...</p>
+                        )}
+                    </section>
                 </div>
             )}
         </div>
+
     );
 };
 

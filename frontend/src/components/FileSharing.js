@@ -29,22 +29,27 @@ const FileSharing = ({ contract }) => {
     };
 
     return (
-        <div>
-            <h3>Share a File</h3>
+        <div className="share-file-container">
+            <h3 className="section-title">Share a File</h3>
             <input
                 type="text"
                 placeholder="File ID (CID)"
                 value={fileId}
                 onChange={(e) => setFileId(e.target.value)}
+                className="text-input"
             />
             <input
                 type="text"
                 placeholder="Recipient Address"
                 value={recipient}
                 onChange={(e) => setRecipient(e.target.value)}
+                className="text-input"
             />
-            <button onClick={handleShare}>Share File</button>
+            <button onClick={handleShare} className="share-button">
+                Share File
+            </button>
         </div>
+
     );
 };
 

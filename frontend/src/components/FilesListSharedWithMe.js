@@ -23,25 +23,26 @@ const FileListSharedWithMe = ({ walletAddress }) => {
     }, [walletAddress]);
 
     return (
-        <div>
-            <h3>Files Shared With You</h3>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            <ul>
+        <div className="shared-files-container">
+            <h3 className="section-title">Files Shared With You</h3>
+            {error && <p className="error-message">{error}</p>}
+            <ul className="file-list">
                 {sharedFiles.length > 0 ? (
                     sharedFiles.map((file, index) => (
-                        <li key={index}>
-                            CID: {file}
+                        <li key={index} className="file-item">
+                            <span className="file-cid">CID: {file}</span>{" "}
                             <a
                                 href={`https://ipfs.io/ipfs/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                className="cid-link"
                             >
                                 View File
                             </a>
                         </li>
                     ))
                 ) : (
-                    <p>No files shared with you yet.</p>
+                    <p className="no-files-message">No files shared with you yet.</p>
                 )}
             </ul>
         </div>

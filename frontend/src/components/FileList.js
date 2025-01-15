@@ -24,15 +24,20 @@ const FileList = ({ walletAddress, contract }) => {
     }, [walletAddress, contract]);
 
     return (
-        <div>
-            <h3>Your Uploaded Files:</h3>
-            <ul>
+        <div className="uploaded-files-container">
+            <h3 className="section-title">Your Uploaded Files:</h3>
+            <ul className="file-list">
                 {files.map((file, index) => (
-                    <li key={index}>
-                        <strong>{file.fileName}</strong> - Uploaded on: {file.timestamp}
+                    <li key={index} className="file-item">
+                        <strong className="file-name">{file.fileName}</strong> - Uploaded on: {file.timestamp}
                         <br />
                         CID:{" "}
-                        <a href={`https://gateway.pinata.cloud/ipfs/${file.cid}`} target="_blank" rel="noopener noreferrer">
+                        <a
+                            href={`https://gateway.pinata.cloud/ipfs/${file.cid}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="cid-link"
+                        >
                             {file.cid}
                         </a>
                     </li>
