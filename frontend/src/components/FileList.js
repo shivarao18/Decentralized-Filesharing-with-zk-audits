@@ -25,7 +25,6 @@ const FileList = ({ walletAddress, contract }) => {
 
     return (
         <div className="uploaded-files-container">
-            <h3 className="section-title">Your Uploaded Files:</h3>
             <ul className="file-list">
                 {files.map((file, index) => (
                     <li key={index} className="file-item">

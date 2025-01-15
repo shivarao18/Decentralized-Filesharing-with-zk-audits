@@ -1,26 +1,10 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-
-/* -------- styles -------- */
-
+/* General Layout */
 .app-container {
   font-family: Arial, sans-serif;
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 100%;
   padding: 20px;
-  background-color: #f9f9f9;
+  background: rgba(228, 249, 245, 0.9);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
@@ -33,11 +17,88 @@ code {
 }
 
 .content-container {
-  display: flex;
-  flex-direction: column;
+  padding: 20px;
+}
+
+/* Grid Layout */
+.grid-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40%, 1fr)); /* For larger screens */
   gap: 20px;
 }
 
+.grid-sections .section:last-child {
+  grid-column: span 2; /* Default: takes 1 column */
+}
+
+@media (max-width: 768px) {
+  /* Adjust grid layout for smaller screens */
+  .grid-sections {
+    grid-template-columns: 1fr; /* Stack sections vertically on smaller screens */
+  }
+
+  .grid-sections .section:last-child {
+    grid-column: span 1; /* Ensure the last section is single column */
+  }
+
+  .app-container {
+    max-width: 100%; /* Full width on small screens */
+    padding: 10px;
+  }
+
+  .app-title {
+    font-size: 1.5rem; /* Smaller title on small screens */
+  }
+
+  .wallet-info {
+    font-size: 0.9rem;
+    text-align: center;
+    word-wrap: break-word;  /* Ensure long words break and do not overflow */
+    overflow-wrap: break-word;  /* Same as word-wrap, for better compatibility */
+    white-space: normal; /* Prevents text from getting stuck in one line */
+  }
+  
+  .wallet-info + p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal; /* Ensures the wallet address text wraps properly */
+    font-size: 1rem;  /* Adjust wallet address font size if needed */
+  }
+  
+
+  .section {
+    padding: 10px;
+  }
+
+  .section h2 {
+    font-size: 1.1rem; /* Smaller headings */
+  }
+
+  button {
+    font-size: 0.9rem; /* Adjust button size */
+    padding: 8px 12px;
+  }
+
+  .file-input, .text-input {
+    font-size: 0.9rem; /* Smaller input text */
+    padding: 8px;
+  }
+
+  .file-item {
+    padding: 8px;
+  }
+
+  .no-files-message {
+    font-size: 0.9rem;
+  }
+
+  /* Reduce gap between sections on smaller screens */
+  .grid-sections {
+    gap: 15px;
+  }
+}
+
+/* Wallet info */
 .wallet-info {
   font-size: 1rem;
   color: #555;
@@ -45,11 +106,12 @@ code {
   margin-bottom: 20px;
 }
 
-.wallet-info span {
+.wallet-info p {
   font-weight: bold;
   color: #007bff;
 }
 
+/* Section Styling */
 .section {
   background-color: #fff;
   padding: 15px;
@@ -69,6 +131,7 @@ code {
   font-style: italic;
 }
 
+/* Button Styling */
 button {
   padding: 10px 15px;
   font-size: 1rem;
@@ -83,23 +146,12 @@ button:hover {
   background-color: #0056b3;
 }
 
-.file-list, .file-item {
-  margin: 10px 0;
-  list-style: none;
-  padding: 0;
+.upload-button.disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
 }
 
-.file-item {
-  padding: 10px;
-  background: #f4f4f4;
-  border-radius: 5px;
-  margin-bottom: 5px;
-  border: 1px solid #ddd;
-}
-
-
-/* ------- File Upload style ------- */
-
+/* File Upload */
 .file-upload-container {
   background-color: #fff;
   padding: 15px;
@@ -124,7 +176,6 @@ button:hover {
 
 .file-input:focus {
   border-color: #007bff;
-  cursor: pointer;
 }
 
 .upload-button {
@@ -142,20 +193,13 @@ button:hover {
   background-color: #0056b3;
 }
 
-.upload-button.disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-}
-
 .upload-success {
   margin-top: 15px;
   font-size: 1rem;
   color: #333;
 }
 
-/* ----- File Sharing ------ */
-
-
+/* File Sharing */
 .share-file-container {
   background-color: #fff;
   padding: 15px;
@@ -202,8 +246,7 @@ button:hover {
   background-color: #0056b3;
 }
 
-
-/* --------- File List --------- */
+/* File List */
 .uploaded-files-container {
   background-color: #fff;
   padding: 15px;
@@ -211,18 +254,6 @@ button:hover {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   margin-top: 20px;
-}
-
-.section-title {
-  font-size: 1.25rem;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.file-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
 }
 
 .file-item {
@@ -252,9 +283,7 @@ button:hover {
   text-decoration: underline;
 }
 
-
-/* -------- Files Shared with me */
-
+/* Shared Files */
 .shared-files-container {
   background-color: #fff;
   padding: 15px;
@@ -264,66 +293,19 @@ button:hover {
   margin-top: 20px;
 }
 
-.section-title {
-  font-size: 1.25rem;
-  color: #333;
-  margin-bottom: 15px;
-}
-
 .error-message {
   color: red;
   font-size: 1rem;
   margin-bottom: 15px;
 }
 
-.file-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
 .file-item {
-  padding: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  transition: background-color 0.3s;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.file-item:hover {
-  background-color: #f1f1f1;
-}
-
-.file-cid {
-  font-weight: bold;
-  color: #333;
-  margin-right: 10px;
-  overflow-wrap: anywhere;
-}
-
-.cid-link {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.cid-link:hover {
-  text-decoration: underline;
-}
-
-.no-files-message {
-  font-size: 1rem;
-  color: #666;
-  margin-top: 15px;
-}
-
-
-/* ----- LogAcess -------- */
-
-
+/* Log Access */
 .log-file-access-container {
   background-color: #fff;
   padding: 15px;
@@ -331,28 +313,6 @@ button:hover {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   margin-top: 20px;
-}
-
-.section-title {
-  font-size: 1.25rem;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.text-input {
-  display: block;
-  width: 95%;
-  margin-bottom: 15px;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-  transition: border-color 0.3s;
-}
-
-.text-input:focus {
-  border-color: #007bff;
 }
 
 .button-group {

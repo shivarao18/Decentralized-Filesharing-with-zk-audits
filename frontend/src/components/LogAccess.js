@@ -54,7 +54,6 @@ const LogAccess = ({ auditLogContract, verifierContract }) => {
 
   return (
     <div className="log-file-access-container">
-        <h3 className="section-title">Log File Access</h3>
         <input
             type="text"
             placeholder="File ID"

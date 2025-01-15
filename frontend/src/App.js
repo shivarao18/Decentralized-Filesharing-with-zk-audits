@@ -80,8 +80,9 @@ const App = () => {
                 <MetaMaskAuth setWalletAddress={setWalletAddress} />
             ) : (
                 <div className="content-container">
-                    <p className="wallet-info">Connected Wallet: <span>{walletAddress}</span></p>
-
+                    <p className="wallet-info">Connected Wallet: <p>{walletAddress}</p> </p>
+                   
+                    <div className="grid-sections">
                     {/* Step 2: Upload Files */}
                     <section className="section">
                         <h2>Upload Files</h2>
@@ -135,6 +136,7 @@ const App = () => {
                             <p className="loading-text">Loading access logging functionality...</p>
                         )}
                     </section>
+                    </div>
                 </div>
             )}
         </div>

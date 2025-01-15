@@ -24,7 +24,6 @@ const FileListSharedWithMe = ({ walletAddress }) => {
 
     return (
         <div className="shared-files-container">
-            <h3 className="section-title">Files Shared With You</h3>
             {error && <p className="error-message">{error}</p>}
             <ul className="file-list">
                 {sharedFiles.length > 0 ? (
